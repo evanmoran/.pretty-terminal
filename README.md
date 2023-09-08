@@ -14,9 +14,10 @@ Install Homebrew package manager:
 
 Install Homebrew essential packages: 
 
-    brew install coreutils git go node ack ripgrep tree emacs vim pico
+    brew install coreutils git zsh-autosuggestions go node ack ripgrep tree emacs vim pico
 
 `git` is needed to download, edit and commit source code remotely 
+`zsh-autosuggestions` makes z shell suggestions better
 `go` and `node` are programming languages that lots of people use
 `emacs`, `vim`, and `pico` edit text files (these will help others help you if you run into trouble)
 `tree` shows all files in a directory with children (good for looking around in terminal)
