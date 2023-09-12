@@ -27,16 +27,20 @@ Install Homebrew essential applications:
 
 `sublime-text` is a solid graphical text editor
 
-Clone This Directory and Setup Pretty Terminal
+Clone Pretty Terminal and Run Setup
 
-    git clone https://github.com/evanmoran/.pretty-terminal/ ~ && ~/.pretty-terminal/link_files
+    git clone https://github.com/evanmoran/.pretty-terminal.git ~ && ~/.pretty-terminal/setup
 
-## Included Files
+## Included Linked Files
 
-    .zshrc: Config for z shell (zsh). Add aliases and paths to this file!
+    ~/.zshrc: Config for z shell (zsh). Add aliases and paths to this file!
 
-    .dircolors: Config for director colors. You never need to touch this most likely.
+    ~/.dircolors: Config for director colors. You never need to touch this most likely.
 
-    .gitconfig: Config for git. Add git aliases to this file.
+    ~/.gitconfig: Config for git. Add git aliases to this file.
 
+## Included Pretty Files
 
+    ~/.pretty-terminal/README.md: This readme!
+
+    ~/.pretty-terminal/pretty.zsh-theme: The Zsh theme for pretty terminal (feel free to modify!)
