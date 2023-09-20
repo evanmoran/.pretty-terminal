@@ -1,0 +1,74 @@
+#!/bin/bash
+set -e
+
+echo ""
+echo ""
+echo "    xoxoxo   xoxoxo                                 "
+echo "   xoxoxoxo xoxoxoxo                                "
+echo "   oxoxoxoxoxoxoxoxo                                "
+echo "    oxoxoxoxoxoxoxo                                 "
+echo "     oxoxoxoxoxoxo                                  "
+echo "       xoxoxoxox     Setting up Pretty Terminal     "
+echo "         oxoxo                                      "
+echo "           o                                        "
+echo ""
+
+# Current dir
+SCRIPT_DIR=$(pwd)/$(dirname "$0")
+#echo "SCRIPT_DIR: ${SCRIPT_DIR}"
+
+# Remove login message (`rm ~/.hushlogin`` to add back)
+touch ~/.hushlogin
+
+# PRETTY FILE PATHS
+# -----------------------------------------------------------------------------
+
+PRETTY_DIR=~/.pretty-terminal
+README_DIR=${PRETTY_DIR}/README.md
+
+DIRCOLORS_SOURCE=${SCRIPT_DIR}/pretty-dircolors
+DIRCOLORS_DEST=~/.dircolors
+
+GITCONFIG_SOURCE=${SCRIPT_DIR}/pretty-gitconfig
+GITCONFIG_DEST=~/.gitconfig
+
+ZSHRC_SOURCE=${SCRIPT_DIR}/pretty-zshrc
+ZSHRC_DEST=~/.zshrc
+
+SUBLIME_SOURCE="/Applications/Sublime Text.app/Contents/SharedSupport/bin/subl"
+SUBLIME_DEST="/usr/local/bin/sub"
+
+# Helper functions
+# -----------------------------------------------------------------------------
+
+function pretty_link() {
+	local source="$1";
+	local dest="$2";
+
+	if [ -e ${dest} ] ; then
+		if [ -L ${dest} ] ; then
+			echo "Verified symlink $dest"
+		else
+			echo "Error: existing file $dest is not a symlink (back up and try again!)"
+		fi
+	else
+		# Missing case: Add a simlink!
+		ln -s "${source}" "${dest}" && echo "Created symlink $dest"
+	fi
+}
+
+# LINK FILES TO ~/.pretty-terminal/<file>
+# -----------------------------------------------------------------------------
+
+echo ""
+echo "LINKING FILES"
+echo ""
+
+pretty_link "$ZSHRC_SOURCE" "$ZSHRC_DEST"
+pretty_link "$DIRCOLORS_SOURCE" "$DIRCOLORS_DEST"
+pretty_link "$GITCONFIG_SOURCE" "$GITCONFIG_DEST"
+pretty_link "$SUBLIME_SOURCE" "$SUBLIME_DEST"
+
+echo ""
+echo "Pretty setup is complete. Have a beautiful day <3"
+echo ""

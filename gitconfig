@@ -1,0 +1,58 @@
+[user]
+	name = Evan Moran
+	email = evan@evanmoran.com
+[color]
+	ui = auto
+
+[core]
+	editor = sub -w
+	pager = less -x1,5
+
+[push]
+	default = current
+
+[branch]
+	autosetuprebase = always
+
+[status]
+	submodulesummary = true
+
+[alias]
+
+    # Print all git aliases
+    alias = !git config --list | grep 'alias\\.' | sed 's/alias\\.\\([^=]*\\)=\\(.*\\)/\\1\\t=> \\2/' | sort
+
+    # Manipulating raise means staged, lower mean unstagged
+    lower = reset HEAD
+    raise = add -A
+
+    # Manipulation of files to commit
+    stage = add -A
+    unstage = reset HEAD
+    uncommit = reset --soft HEAD^
+
+    # Improved log / history command
+
+    lg = log --graph --pretty=format:'%C(cyan)%h%C(green) %an %C(yellow)%cr%C(reset): %s%C(reset)%C(magenta)%d%Creset' --abbrev-commit --date=relative
+    h = lg
+
+    # Fun command to create a TAR file of everything so you can recover if something goes wrong :)
+    panic = !tar cvf ../git_panic.tar .
+
+    # Commit ammend with pretty printing
+    amend = !git log -n 1 --pretty=tformat:%s%n%n%b | git commit -F - --amend
+
+    # Add file to ignore list
+    ignore=!([ ! -e .gitignore ] && touch .gitignore) | echo $1 >>.gitignore
+
+    # Commit a WIP (work in progress commit) and undo the commit (good for changing branches)
+    wip = !"git add -A; git ls-files --deleted -z | xargs -0 git rm; git commit -m \"wip\""
+    unwip = !"git log -n 1 | grep -q -c wip && git reset HEAD~1"
+
+    # Find lost commits
+    lost = !"git fsck | awk '/dangling commit/ {print $3}' | git show --format='SHA1: %C(yellow)%h%Creset %f' --stdin | awk '/SHA1/ {sub(\"SHA1: \", \"\"); print}'"
+
+    # Update submodules
+    sup = submodule update --init --recursive
+
+    cleanall = clean -fxd
