@@ -31,6 +31,7 @@ ZSH_HIGHLIGHT_STYLES[double-quoted-argument]=fg=green
 ZSH_HIGHLIGHT_STYLES[dollar-double-quoted-argument]=fg=cyan
 ZSH_HIGHLIGHT_STYLES[back-double-quoted-argument]=fg=cyan
 ZSH_HIGHLIGHT_STYLES[assign]=none
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=black'
 
 function pretty1() {
   echo ""
@@ -154,8 +155,6 @@ elif is_os "mac"; then
   export NODE_PATH=/usr/local/lib/node_modules
 
   # Path for npm
-  export PATH=/usr/local/share/npm/bin:$PATH
-
   export PATH=~/bin:$PATH
 
   export EDITOR="pico -w"
@@ -227,7 +226,7 @@ function define_colors {
 
 define_colors
 
-alias print_colors="define_colors; echo -e \"${COLOR_NONE}COLOR_NONE\";echo -e \"${COLOR_WHITE}COLOR_WHITE\t${COLOR_WHITE_LIGHT}COLOR_WHITE_LIGHT\";echo -e \"${COLOR_BLUE}COLOR_BLUE\t${COLOR_BLUE_LIGHT}COLOR_BLUE_LIGHT\";echo -e \"${COLOR_GREEN}COLOR_GREEN\t${COLOR_GREEN_LIGHT}COLOR_GREEN_LIGHT\";echo -e \"${COLOR_CYAN}COLOR_CYAN\t${COLOR_CYAN_LIGHT}COLOR_LIGHT_CYAN\";echo -e \"${COLOR_RED}COLOR_RED\t${COLOR_RED_LIGHT}COLOR_RED_LIGHT\";echo -e \"${COLOR_MAGENTA}COLOR_MAGENTA\t${COLOR_MAGENTA_LIGHT}COLOR_MAGENTA_LIGHT\";echo -e \"${COLOR_YELLOW}COLOR_YELLOW\t${COLOR_YELLOW_LIGHT}COLOR_YELLOW_LIGHT\";echo -e \"${COLOR_BLACK}COLOR_BLACK\t${COLOR_BLACK_LIGHT}COLOR_BLACK_LIGHT\""
+alias pretty_colors="define_colors; echo -e \"${COLOR_NONE}COLOR_NONE\";echo -e \"${COLOR_WHITE}COLOR_WHITE\t${COLOR_WHITE_LIGHT}COLOR_WHITE_LIGHT\";echo -e \"${COLOR_BLUE}COLOR_BLUE\t${COLOR_BLUE_LIGHT}COLOR_BLUE_LIGHT\";echo -e \"${COLOR_GREEN}COLOR_GREEN\t${COLOR_GREEN_LIGHT}COLOR_GREEN_LIGHT\";echo -e \"${COLOR_CYAN}COLOR_CYAN\t${COLOR_CYAN_LIGHT}COLOR_LIGHT_CYAN\";echo -e \"${COLOR_RED}COLOR_RED\t${COLOR_RED_LIGHT}COLOR_RED_LIGHT\";echo -e \"${COLOR_MAGENTA}COLOR_MAGENTA\t${COLOR_MAGENTA_LIGHT}COLOR_MAGENTA_LIGHT\";echo -e \"${COLOR_YELLOW}COLOR_YELLOW\t${COLOR_YELLOW_LIGHT}COLOR_YELLOW_LIGHT\";echo -e \"${COLOR_BLACK}COLOR_BLACK\t${COLOR_BLACK_LIGHT}COLOR_BLACK_LIGHT\""
 
 
 # Colors
@@ -237,13 +236,36 @@ alias print_colors="define_colors; echo -e \"${COLOR_NONE}COLOR_NONE\";echo -e \
   function dark { }
 
   function black { dark; osascript -e "tell application \"Terminal\" to set background color of front window to {0, 0, 0}"; }
+
   function red { dark; osascript -e "tell application \"Terminal\" to set background color of front window to {6885, 0, 765}"; }
+
+  function darkred { dark; osascript -e "tell application \"Terminal\" to set background color of front window to {4885, 0, 765}"; }
+
   function green { dark; osascript -e "tell application \"Terminal\" to set background color of front window to {3060, 6630, 3570}"; }
+
+  function darkgreen { dark; osascript -e "tell application \"Terminal\" to set background color of front window to {2060, 5630, 2570}"; }
+
   function purple { dark; osascript -e "tell application \"Terminal\" to set background color of front window to {5100, 3060, 7395}"; }
+
+  function darkpurple { dark; osascript -e "tell application \"Terminal\" to set background color of front window to {4100, 2060, 5395}"; }
+
   function cyan { dark; osascript -e "tell application \"Terminal\" to set background color of front window to {0, 7140, 7395}"; }
+
+  function darkcyan { dark; osascript -e "tell application \"Terminal\" to set background color of front window to {0, 5140, 5395}"; }
+
   function orange { dark; osascript -e "tell application \"Terminal\" to set background color of front window to {7650, 4080, 255}"; }
+
+  function darkorange { dark; osascript -e "tell application \"Terminal\" to set background color of front window to {6650, 3080, 0}"; }
+
   function blue { dark; osascript -e "tell application \"Terminal\" to set background color of front window to {765, 0, 6885}"; }
-  function yellow { dark; osascript -e "tell application \"Terminal\" to set background color of front window to {7650, 7650, 0}"; }
+
+  function darkblue { dark; osascript -e "tell application \"Terminal\" to set background color of front window to {0, 0, 5585}"; }
+
+  function yellow { dark; osascript -e "tell application \"Terminal\" to set background color of front window to {6650, 6650, 0}"; }
+
+  function darkyellow { dark; osascript -e "tell application \"Terminal\" to set background color of front window to {5050, 5050, 0}"; }
+
+
   function terminal_tab { osascript -e 'tell application "Terminal" to activate' \
     -e 'tell application "System Events" to tell process "Terminal" to keystroke "t" using command down' \
     -e 'tell application "Terminal" to do script "echo It begins." in selected tab of the front window' }
@@ -252,6 +274,11 @@ alias print_colors="define_colors; echo -e \"${COLOR_NONE}COLOR_NONE\";echo -e \
   function comment { echo -e "${COLOR_COMMENT}[$@]${COLOR_NONE}"; }
   function run { comment $@; $@; }
   function run_color { local C1=$1; local C2=$2; shift; shift; comment $@; $C1; $@; local ERR=$?; $C2; return $ERR}
+
+  function nl() { echo '' ; }; nl;
+  function sep(){ str=$1; num=$2; s=$( printf "%${num}s" ); echo "${s// /${str}}"; };
+  function sep1(){ sep "=" 90; };
+  function sep2(){ sep "-" 90; }
 
   # Color terminal during run
   # function run_light { light; run $@; local E=$?; dark; return $E }
@@ -365,21 +392,9 @@ alias history_list='run history $@'
 alias history_clear='run history -c'
 alias history_grep='run history | grep -i $@'
 
-alias s='cd ..'
 alias utc='date -u "+UTC    %Y-%m-%d %H:%M:%S    %Y-%m-%d %r"'
 alias pst='date "+PST    %Y-%m-%d %H:%M:%S    %Y-%m-%d %r"'
 alias now='utc && pst'
-alias de='cd ~/dev'
-
-alias tm='cd "/tmp/Mason Software/$@"'
-alias dm='cd "/tmp/Mason Software/Documents/$@"'
-alias am='cd "/tmp/Mason Software/Podcast Mason/$@"'
-alias pm='cd "/tmp/Mason Software/Podcast Mason/$@"'
-alias m='cd ~/mason'
-alias mc='cd ~/mason/content_service'
-alias md='cd ~/mason/drive_service'
-alias mg='cd ~/mason/mason_go_library'
-alias mm='cd ~/mason/db_migrator'
 
 alias diff='run git difftool --extcmd=/usr/bin/opendiff $@'
 alias diffs='run git difftool --staged --extcmd=/usr/bin/opendiff $@'
@@ -524,3 +539,5 @@ elif type compctl &>/dev/null; then
   compctl -K _npm_completion npm
 fi
 ###-end-npm-completion-###
+
+[[ "$TERM_PROGRAM" == "CodeEditApp_Terminal" ]] && . "/Applications/CodeEdit.app/Contents/Resources/codeedit_shell_integration.zsh"
