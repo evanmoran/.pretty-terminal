@@ -29,7 +29,7 @@ I believe in YOU.
 Try something new today. You've got this.
 YOU'VE GOT THIS.
 Will you accept this rose?
-Here's looking at you, kid
+Here's looking at you, kid.
 Go ahead, make my day.
 Release the Kraken!
 “Life is beautiful and so are you.” ― Debasish Mridha
